@@ -1,7 +1,4 @@
 .titleAndStart{   
-    position: absolute;
-    top: 70px;
-    left: 315px;
-    width: 950px;
-    height: 200px;
+    margin: 0 auto;
+    top: 60px;
 }
