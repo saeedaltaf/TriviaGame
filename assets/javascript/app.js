@@ -6,7 +6,7 @@ $(document).ready(function () {
         $(".titleAndStart").html(startScreen);
     }
     startScreen();
-})
+
 
 //Create on-click function which will lead from the start screen into the first question:
 $("body").on("click", '.start-button', function (event) {
@@ -29,7 +29,7 @@ $("body").on("click", '.reset-button', function (event) {
 })
 
 //Click function for answer buttons with if statements to determine correct answers
-    //and when the game should end after 10 questions:
+//and when the game should end after 10 questions:
 $("body").on("click", '.answer-button', function (event) {
     console.log("Answer button clicked");
     var selected = $(this).text(); //This is the answer button the user chose
@@ -62,61 +62,65 @@ var incorrectTotal = 0;
 var noAnswer = 0;
 
 //Creating final screen function to display data at end of game
-    //with restart button to restart the game:
-    function finalScreen() {
-        gameQuestions = "<p style = text-align:center;>You finished! Here are your results:</p>" + "<p>Correct Answers: " + correctTotal + "</p>" + "<p>Wrong Answers: " + incorrectTotal + "</p>" + "<p>Unanswered: " + noAnswer + "</p>" + "<br><br>" + "<button type='button' class='btn btn-primary btn-lg btn-block start-button'>RESTART GAME!</button>";
-        $(".titleAndStart").html(gameQuestions);
-    };
+//with restart button to restart the game:
+function finalScreen() {
+    gameQuestions = "<p style = text-align:center;>You finished! Here are your results:</p>" + "<p>Correct Answers: " + correctTotal + "</p>" + "<p>Wrong Answers: " + incorrectTotal + "</p>" + "<p>Unanswered: " + noAnswer + "</p>" + "<br><br>" + "<button type='button' class='btn btn-primary btn-lg btn-block start-button'>RESTART GAME!</button>";
+    $(".titleAndStart").html(gameQuestions);
+};
 
 //Function for timed questions (30 seconds) for questions 1-9:
-function wait (){
-    if (questionNumber < 9){
-        questionNumber++;
-        loadQuestions();
-        timer = 30;
+function wait() {
+    if (questionNumber < 9) {
+            questionNumber++;
+    loadQuestions();
+    timer = 30;
     }
 };
 
 //Function for when time runs out, correct answer or incorrect answer during questions
-    //Reset the clock and show message for 4 seconds:
+//Reset the clock and show message for 4 seconds:
 
-function timeIsUp(){
+function timeIsUp() {
     noAnswerTotal++;
     timeUp = "<p style = text-align: center;>Time is up!</p>" + "<p>The correct answer was: " + questionArray[questionNumber].answer + "</p>";
     $(".titleAndStart").html(timeUp);
-        
+    clearInterval(clock);
+    setTimeout(wait, 4000);
+
 }
 
-function youWin(){
+function youWin() {
     correctTotal++;
     winner = "<p style = text-align: center;>You're correct!</p>" + "<p>The answer was: " + questionArray[questionNumber].answer + "</p>";
     $(".titleAndStart").html(winner);
+    setTimeout(wait,4000);
 }
 
-function youLose(){
+function youLose() {
     loser = "<p style = text-align: center;>You're wrong!" + "<p>The correct answer was: " + questionArray[questionNumber].answer + "</p>";
     $(".titleAndStart").html(loser);
+    setTimeout(wait,4000);
 }
 
 //Reset to final screen:
-function reset(){
+function reset() {
     finalScreen();
 }
 
 //24 second shot clock for answering each question:
-function answerClock(){
+function answerClock() {
     clock = setInterval(thirtySeconds, 1000);
 }
-    function thirtySeconds(){
-        if (timer === 0){
-            clearInterval(clock);
-            timeIsUp();
-        }
-        if (timer > 0){
-            timer--;
-        }
-        $(".timerBox").html(timer);
+function thirtySeconds() {
+    if (timer === 0) {
+        clearInterval(clock);
+        timeIsUp();
     }
+    if (timer > 0) {
+        timer--;
+    }
+    $(".timerBox").html(timer);
+}
 
 
 //Create functions for timers, wins, losses, reset
@@ -179,19 +183,29 @@ var questionArray = [
 //Loading questions to the screen:
 var gameQuestions = 0;
 
-function loadQuestions(){
+function loadQuestions() {
     timer = 30;
     clearInterval(clock);
     gameQuestions = "<p>Time Remaining: " + "<span class='timerBox'>30</span></p>" +
         "<p style = text-align: center;>" + questionArray[questionNumber].question + "</p>" +
 
         "<br><button type='button' class='btn btn-primary btn-lg btn-block start-button'>" + questionArray[questionNumber].options[0] + "</button>"
-        "<br><button type='button' class='btn btn-primary btn-lg btn-block start-button'>" + questionArray[questionNumber].options[1] + "</button>"
-        "<br><button type='button' class='btn btn-primary btn-lg btn-block start-button'>" + questionArray[questionNumber].options[2] + "</button>"
-        "<br><button type='button' class='btn btn-primary btn-lg btn-block start-button'>" + questionArray[questionNumber].options[3] + "</button>"
+    "<br><button type='button' class='btn btn-primary btn-lg btn-block start-button'>" + questionArray[questionNumber].options[1] + "</button>"
+    "<br><button type='button' class='btn btn-primary btn-lg btn-block start-button'>" + questionArray[questionNumber].options[2] + "</button>"
+    "<br><button type='button' class='btn btn-primary btn-lg btn-block start-button'>" + questionArray[questionNumber].options[3] + "</button>"
     $(".titleAndStart").html(gameQuestions);
     answerClock();
-    }
+}
+
+});
+
+
+
+
+
+
+
+
 
 
 
