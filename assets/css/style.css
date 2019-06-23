@@ -1,4 +1,23 @@
+body{
+    background: url(../images/wallpaper.jpg) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    font-family: 'Varela Round', sans-serif;
+}
 .titleAndStart{   
-    margin: 0 auto;
-    top: 60px;
+    float: right;
+    right: 120px;
+    top: 120px;
+    /* background-color: greenyellow; */
+    color: white;
+    padding-bottom: 10px;
+}
+.btn{
+    background-color: grey;
+    border: none;
+}
+.btn:hover{
+    background-color: red;
 }
