@@ -1,42 +1,42 @@
-$(document).ready(function(){
+$(document).ready(function () {
 
-//Create start screen with Welcome and Start button
-function startScreen(){
-    startScreen = "<h1 style = 'text-align: center;'>Welcome to the NBA Quiz!</h1><br><br><button type='button' class='btn btn-primary btn-lg btn-block start-button'>START GAME</button>";
-    $(".titleAndStart").html(startScreen);
-}
-startScreen();
+    //Create start screen with Welcome and Start button
+    function startScreen() {
+        startScreen = "<h1 style = 'text-align: center;'>Welcome to the NBA Quiz!</h1><br><br><button type='button' class='btn btn-primary btn-lg btn-block start-button'>START GAME</button>";
+        $(".titleAndStart").html(startScreen);
+    }
+    startScreen();
 })
 
 //Create on-click function which will lead from the start screen into the first question:
-$("body").on("click", '.start-button', function(event){
-    console.log("button clicked "  + $(this).text());
+$("body").on("click", '.start-button', function (event) {
+    console.log("button clicked " + $(this).text());
     loadQuestions();
 });
 
 //Create on-click event for the reset button when the game gets to the end:
-$("body").on("click", '.reset-button', function(event){
+$("body").on("click", '.reset-button', function (event) {
     console.log("Reset button clicked");
     questionNumber = 0;
     correctTotal = 0;
     incorrectTotal = 0;
-    noAnswerTotal = 0; 
+    noAnswerTotal = 0;
     timer = 15;
     wins = 0;
     losses = 0;
-    noAnswer = 0; 
+    noAnswer = 0;
     startScreen();
 })
 
 //Click function for answer buttons with if statements to determine correct answers
     //and when the game should end after 10 questions:
-$("body").on("click", '.answer-button', function(event){
+$("body").on("click", '.answer-button', function (event) {
     console.log("Answer button clicked");
     var selected = $(this).text(); //This is the answer button the user chose
 
-//To track the wins and losses:
+    //To track the wins and losses:
     if (questionNumber < 10) {
-        if (selected === questionArray[questionNumber].answer){
+        if (selected === questionArray[questionNumber].answer) {
             wins++;
             wins();
             clearInterval(clock);
@@ -46,8 +46,78 @@ $("body").on("click", '.answer-button', function(event){
             clearInterval(clock);
         }
     }
-///////////////////////////////////THIS IS WHERE I LEFT OFF FOR NOW$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-})
+    if (questionNumber === 9) {
+        finalScreen();
+    }
+    console.log("Wins: " + wins + " Losses: " + loss);
+});
+
+var timerBox;
+var timer = 30;
+var clock;
+var wins = 0;
+var losses = 0;
+var correctTotal = 0;
+var incorrectTotal = 0;
+var noAnswer = 0;
+
+//Creating final screen function to display data at end of game
+    //with restart button to restart the game:
+    function finalScreen() {
+        gameQuestions = "<p style = text-align:center;>You finished! Here are your results:</p>" + "<p>Correct Answers: " + correctTotal + "</p>" + "<p>Wrong Answers: " + incorrectTotal + "</p>" + "<p>Unanswered: " + noAnswer + "</p>" + "<br><br>" + "<button type='button' class='btn btn-primary btn-lg btn-block start-button'>RESTART GAME!</button>";
+        $(".titleAndStart").html(gameQuestions);
+    };
+
+//Function for timed questions (30 seconds) for questions 1-9:
+function wait (){
+    if (questionNumber < 9){
+        questionNumber++;
+        loadQuestions();
+        timer = 30;
+    }
+};
+
+//Function for when time runs out, correct answer or incorrect answer during questions
+    //Reset the clock and show message for 4 seconds:
+
+function timeIsUp(){
+    noAnswerTotal++;
+    timeUp = "<p style = text-align: center;>Time is up!</p>" + "<p>The correct answer was: " + questionArray[questionNumber].answer + "</p>";
+    $(".titleAndStart").html(timeUp);
+        
+}
+
+function youWin(){
+    correctTotal++;
+    winner = "<p style = text-align: center;>You're correct!</p>" + "<p>The answer was: " + questionArray[questionNumber].answer + "</p>";
+    $(".titleAndStart").html(winner);
+}
+
+function youLose(){
+    loser = "<p style = text-align: center;>You're wrong!" + "<p>The correct answer was: " + questionArray[questionNumber].answer + "</p>";
+    $(".titleAndStart").html(loser);
+}
+
+//Reset to final screen:
+function reset(){
+    finalScreen();
+}
+
+//24 second shot clock for answering each question:
+function answerClock(){
+    clock = setInterval(thirtySeconds, 1000);
+}
+    function thirtySeconds(){
+        if (timer === 0){
+            clearInterval(clock);
+            timeIsUp();
+        }
+        if (timer > 0){
+            timer--;
+        }
+        $(".timerBox").html(timer);
+    }
+
 
 //Create functions for timers, wins, losses, reset
 //Create Object with questions and answer choices
@@ -106,6 +176,22 @@ var questionArray = [
     }
 ]
 
+//Loading questions to the screen:
+var gameQuestions = 0;
+
+function loadQuestions(){
+    timer = 30;
+    clearInterval(clock);
+    gameQuestions = "<p>Time Remaining: " + "<span class='timerBox'>30</span></p>" +
+        "<p style = text-align: center;>" + questionArray[questionNumber].question + "</p>" +
+
+        "<br><button type='button' class='btn btn-primary btn-lg btn-block start-button'>" + questionArray[questionNumber].options[0] + "</button>"
+        "<br><button type='button' class='btn btn-primary btn-lg btn-block start-button'>" + questionArray[questionNumber].options[1] + "</button>"
+        "<br><button type='button' class='btn btn-primary btn-lg btn-block start-button'>" + questionArray[questionNumber].options[2] + "</button>"
+        "<br><button type='button' class='btn btn-primary btn-lg btn-block start-button'>" + questionArray[questionNumber].options[3] + "</button>"
+    $(".titleAndStart").html(gameQuestions);
+    answerClock();
+    }
 
 
 

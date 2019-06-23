@@ -20,4 +20,5 @@ body{
 }
 .btn:hover{
     background-color: red;
+    border: none;
 }
