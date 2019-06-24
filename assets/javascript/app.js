@@ -12,6 +12,7 @@ $(document).ready(function () {
     $("body").on("click", '.start-button', function (event) {
         console.log("button clicked " + $(this).text());
         loadQuestions();
+        // console.log("clicked start");
     });
 
     //Create on-click event for the reset button when the game gets to the end:
@@ -25,7 +26,7 @@ $(document).ready(function () {
         wins = 0;
         losses = 0;
         noAnswer = 0;
-        startScreen();
+        location.reload();
     })
 
     //Click function for answer buttons with if statements to determine correct answers
@@ -34,14 +35,14 @@ $(document).ready(function () {
         console.log("Answer button clicked");
         var selected = $(this).text(); //This is the answer button the user chose
 
-        //To track the wins and losses:
+        //To track the wins and losses on click and trigger (you win or lose screen):
         if (questionNumber < 10) {
             if (selected === questionArray[questionNumber].answer) {
                 wins++;
                 youWin();
                 clearInterval(clock);
             } else {
-                loss++;
+                losses++;
                 youLose();
                 clearInterval(clock);
             }
@@ -49,7 +50,7 @@ $(document).ready(function () {
         if (questionNumber === 9) {
             finalScreen();
         }
-        console.log("Wins: " + wins + " Losses: " + loss);
+        console.log("Wins: " + wins + " Losses: " + losses);
     });
 
     var timerBox;
@@ -64,7 +65,7 @@ $(document).ready(function () {
     //Creating final screen function to display data at end of game
     //with restart button to restart the game:
     function finalScreen() {
-        gameQuestions = "<p style = text-align:center;>You finished! Here are your results:</p>" + "<p>Correct Answers: " + correctTotal + "</p>" + "<p>Wrong Answers: " + incorrectTotal + "</p>" + "<p>Unanswered: " + noAnswerTotal + "</p>" + "<br><br>" + "<button type='button' class='btn btn-primary btn-lg btn-block start-button'>RESTART GAME!</button>";
+        gameQuestions = "<p style = text-align:center;>You finished! Here are your results:</p>" + "<p>Correct Answers: " + correctTotal + "</p>" + "<p>Wrong Answers: " + incorrectTotal + "</p>" + "<p>Unanswered: " + noAnswerTotal + "</p>" + "<br><br>" + "<button type='button' class='btn btn-primary btn-lg btn-block reset-button'>RESTART GAME!</button>";
         $(".titleAndStart").html(gameQuestions);
     };
 
@@ -94,12 +95,15 @@ $(document).ready(function () {
         winner = "<p style = text-align: center;>You're correct!</p>" + "<p>The answer was: " + questionArray[questionNumber].answer + "</p>";
         $(".titleAndStart").html(winner);
         setTimeout(wait, 4000);
+        console.log("youwin");
     }
 
     function youLose() {
+        incorrectTotal++;
         loser = "<p style = text-align: center;>You're wrong!" + "<p>The correct answer was: " + questionArray[questionNumber].answer + "</p>";
         $(".titleAndStart").html(loser);
         setTimeout(wait, 4000);
+        console.log("youlose");
     }
 
     //Reset to final screen:
@@ -189,10 +193,10 @@ $(document).ready(function () {
         gameQuestions = "<p>Time Remaining: " + "<span class='timerBox'>30</span></p>" +
             "<p style = text-align: center;>" + questionArray[questionNumber].question + "</p>" +
 
-            "<br><button type='button' class='btn btn-primary btn-lg btn-block start-button'>" + questionArray[questionNumber].options[0] + "</button>" +
-            "<br><button type='button' class='btn btn-primary btn-lg btn-block start-button'>" + questionArray[questionNumber].options[1] + "</button>" +
-            "<br><button type='button' class='btn btn-primary btn-lg btn-block start-button'>" + questionArray[questionNumber].options[2] + "</button>" +
-            "<br><button type='button' class='btn btn-primary btn-lg btn-block start-button'>" + questionArray[questionNumber].options[3] + "</button>"
+            "<br><button type='button' class='btn btn-primary btn-lg btn-block answer-button'>" + questionArray[questionNumber].options[0] + "</button>" +
+            "<br><button type='button' class='btn btn-primary btn-lg btn-block answer-button'>" + questionArray[questionNumber].options[1] + "</button>" +
+            "<br><button type='button' class='btn btn-primary btn-lg btn-block answer-button'>" + questionArray[questionNumber].options[2] + "</button>" +
+            "<br><button type='button' class='btn btn-primary btn-lg btn-block answer-button'>" + questionArray[questionNumber].options[3] + "</button>"
         $(".titleAndStart").html(gameQuestions);
         answerClock();
     }

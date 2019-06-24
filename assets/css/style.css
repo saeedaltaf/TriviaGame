@@ -22,3 +22,7 @@ body{
     background-color: red;
     border: none;
 }
+.btn:active{
+    border: none;
+    background-color: red;
+}
